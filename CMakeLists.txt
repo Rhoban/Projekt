@@ -16,6 +16,7 @@ include_directories ("${CURA_DIR}/libs")
 set (SOURCES
     Generator.cpp
 
+    wingetopt.cpp
     util.cpp
     main.cpp
     )

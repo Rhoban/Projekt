@@ -1,5 +1,9 @@
 #include <iostream>
+#if defined(_WIN32) || defined(_WIN64)
+#include "wingetopt.h"
+#else
 #include <getopt.h>
+#endif
 #include <unistd.h>
 #include "Generator.h"
 #include "util.h"
