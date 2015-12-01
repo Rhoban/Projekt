@@ -14,8 +14,8 @@ void Generator::openSTL(std::string filename, std::string plate)
     if (plate == "xz") {
         mat.m[1][1] = 0;
         mat.m[2][2] = 0;
-        mat.m[1][2] = -1;
-        mat.m[2][1] = 1;
+        mat.m[1][2] = 1;
+        mat.m[2][1] = -1;
     }
     loadMeshIntoMeshGroup(&meshgroup, filename.c_str(), mat);
 
