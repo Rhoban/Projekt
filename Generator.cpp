@@ -103,6 +103,7 @@ void Generator::addLayer(std::stringstream &svg, bool isFirst, int z, std::strin
     } else {
         svg << "\" stroke=\"none\" fill=\"" << color << "\" stroke-width=\"0.1\" />";
     }
+    svg << std::endl;
 
     previous = sliced;
 }
