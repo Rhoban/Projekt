@@ -6,11 +6,17 @@
 
 void usage()
 {
-    std::cout << "Projekt - v1.0" << std::endl;
+    std::cout << "Projekt - v0.1" << std::endl;
     std::cout << "usage: projekt input.stl" << std::endl;
     std::cout << std::endl;
     std::cout << "-z: Use the XZ plane as bottom instead of XY" << std::endl;
-    std::cout << "-e z:color: Add an engravure" << std::endl;
+    std::cout << "-e z:color: Add an engravure at height z with given color" << std::endl;
+    std::cout << "-o output.svg: Specify output name (default to stdout)" << std::endl;
+    std::cout << std::endl;
+    std::cout << "Examples:" << std::endl;
+    std::cout << "projekt input.stl > out.svg" << std::endl;
+    std::cout << "projekt input.stl -e 2.5:black -o out.svg" << std::endl;
+    std::cout << "projekt input.stl -e 2.5:black -e 2.9:grey -z -o out.svg" << std::endl;
     exit(0);
 }
 
@@ -21,7 +27,7 @@ int main(int argc, char *argv[])
     std::string input = "";
     std::string plate = "xy";
 
-    while ((index = getopt(argc, argv, "ze:")) != -1) {
+    while ((index = getopt(argc, argv, "ze:o:")) != -1) {
         switch (index) {
             case 'z':
                 plate = "xz";
@@ -31,6 +37,9 @@ int main(int argc, char *argv[])
                 if (parts.size() != 2) usage();
                 generator.addEngravure(atof(parts[0].c_str()), parts[1]);
                 }
+                break;
+            case 'o':
+                generator.setOutput(std::string(optarg));
                 break;
         }
     }

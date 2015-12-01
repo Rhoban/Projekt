@@ -1,8 +1,9 @@
+#include <fstream>
 #include <unistd.h>
 #include "Generator.h"
 
 Generator::Generator()
-    : mesh(nullptr)
+    : mesh(nullptr), output("")
 {
 }
 
@@ -32,7 +33,12 @@ void Generator::openSTL(std::string filename, std::string plate)
         dup(tmp);
     }
 }
-        
+
+void Generator::setOutput(std::string filename)
+{
+    output = filename;
+}
+
 void Generator::addEngravure(double z, std::string color)
 {
     Engravure e;
@@ -52,9 +58,10 @@ Polygons Generator::slice(int z)
         return result;
     }
 }
-        
+
 void Generator::addLayer(std::stringstream &svg, bool isFirst, int z, std::string color)
 {
+    z += zOffset;
     auto sliced = slice(z);
     auto polygon = sliced;
 
@@ -81,6 +88,7 @@ void Generator::addLayer(std::stringstream &svg, bool isFirst, int z, std::strin
                 if (Y > yMax) yMax = Y;
             }
 
+
             if (first) {
                 first = false;
             } else {
@@ -101,23 +109,35 @@ void Generator::addLayer(std::stringstream &svg, bool isFirst, int z, std::strin
 
 void Generator::run()
 {
-    hasM = false;
+    std::ostream *os = &std::cout;
+    std::ofstream ofs;
+    if (output != "") {
+        ofs.open(output);
+        os = &ofs;
+    }
+
     std::stringstream svg;
+
+    auto min = mesh.min();
+    zOffset = min.z;
 
     Polygons empty;
     previous = empty;
 
+    hasM = false;
     addLayer(svg, true, 1, "red");
     for (auto e : engravures) {
         addLayer(svg, false, e.z*1000, e.color);
     }
-    
-    xMin -= 0.1; yMin -= 0.1;
-    xMax += 0.1; yMax += 0.1;
+
     double width = (xMax-xMin);
     double height = (yMax-yMin);
-    std::cout << "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"" << xMin << 
+    *os << "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"" << xMin << 
         " " << yMin << " " << width << " " << height << "\">" << std::endl;
-    std::cout << svg.str();
-    std::cout << "</svg>" << std::endl;
+    *os << svg.str();
+    *os << "</svg>" << std::endl;
+
+    if (output != "") {
+        ofs.close();
+    }
 }

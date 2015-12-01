@@ -20,12 +20,15 @@ class Generator
         };
 
         void openSTL(std::string filename, std::string plate);
+        void setOutput(std::string filename);
         void addEngravure(double z, std::string color);
         void run();
 
     protected:
-        double xMin, yMin, xMax, yMax;
         bool hasM;
+        double xMin, yMin, xMax, yMax;
+        std::string output;
+        double zOffset;
         Polygons previous;
         Mesh mesh;
         std::vector<Engravure> engravures;
