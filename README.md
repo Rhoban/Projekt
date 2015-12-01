@@ -40,3 +40,7 @@ You can then add engraving layers using the `-e` option, for instance:
 
 Will generate red lines for cutting and black filled polygons to engrave the difference
 between the first layer and the layer at 2.5mm from the bottom of your STL.
+
+You can specify multiple engraving, like this:
+
+    projekt -e 2.5:black -e 2.9:lightgrey input.stl -o out.svg
