@@ -66,7 +66,7 @@ void Generator::addLayer(std::stringstream &svg, bool isFirst, int z, std::strin
     auto polygon = sliced;
 
     if (!isFirst) {
-        polygon = previous.difference(polygon.offset(10));
+        polygon = previous.difference(polygon.offset(20));
     }
 
     svg << "<path d=\"";
@@ -75,7 +75,7 @@ void Generator::addLayer(std::stringstream &svg, bool isFirst, int z, std::strin
         bool first = true;
         for (auto point : path) {
             double X = point.X*3.543307/1000.0;
-            double Y = point.Y*3.543307/1000.0;
+            double Y = -point.Y*3.543307/1000.0;
 
             if (!hasM) {
                 hasM = true;
