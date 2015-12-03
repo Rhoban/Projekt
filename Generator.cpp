@@ -66,8 +66,11 @@ void Generator::addLayer(std::stringstream &svg, bool isFirst, int z, std::strin
     auto polygon = sliced;
 
     if (!isFirst) {
-        polygon = previous.difference(polygon.offset(20));
-    }
+        polygon = previous.difference(polygon.offset(25));
+    } else {
+		sliced = sliced.offset(10);
+		polygon = sliced;
+	}
 
     svg << "<path d=\"";
     for (auto path : polygon) {
