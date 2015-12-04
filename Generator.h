@@ -8,6 +8,9 @@
 
 using namespace cura;
 
+#define FORMAT_SVG	0
+#define FORMAT_PLT	1
+
 class Generator
 {
     public:
@@ -21,10 +24,12 @@ class Generator
 
         void openSTL(std::string filename, std::string plate);
         void setOutput(std::string filename);
+		void setOutputFormat(std::string format);
         void addEngravure(double z, std::string color);
         void run();
 
     protected:
+		int format;
         bool hasM;
         double xMin, yMin, xMax, yMax;
         std::string output;
@@ -34,5 +39,5 @@ class Generator
         std::vector<Engravure> engravures;
 
         Polygons slice(int z);
-        void addLayer(std::stringstream &svg, bool isFirst, int z, std::string color);
+        void addLayer(std::stringstream &data, bool isFirst, int z, std::string color);
 };
