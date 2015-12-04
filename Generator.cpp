@@ -80,8 +80,8 @@ void Generator::addLayer(std::stringstream &data, bool isFirst, int z, std::stri
 	double fX, fY;
 	
 	if (format == FORMAT_PLT) {
-		xRatio = -40.0/1000.0;
-		yRatio = -40.0/1000.0;
+		xRatio = 40.0/1000.0;
+		yRatio = 40.0/1000.0;
 	}
 
     if (!isFirst) {
