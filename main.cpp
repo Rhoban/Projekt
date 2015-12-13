@@ -16,6 +16,7 @@ void usage()
     std::cout << "-z: Use the XZ plane as bottom instead of XY" << std::endl;
     std::cout << "-e z:color: Add an engravure at height z with given color" << std::endl;
     std::cout << "-o output.svg: Specify output name (default to stdout)" << std::endl;
+	std::cout << "-f [svg|plt]: Specify output format" << std::endl;
     std::cout << std::endl;
     std::cout << "Examples:" << std::endl;
     std::cout << "projekt input.stl > out.svg" << std::endl;
@@ -31,8 +32,11 @@ int main(int argc, char *argv[])
     std::string input = "";
     std::string plate = "xy";
 
-    while ((index = getopt(argc, argv, "ze:o:")) != -1) {
+    while ((index = getopt(argc, argv, "ze:o:f:")) != -1) {
         switch (index) {
+			case 'f':
+				generator.setOutputFormat(std::string(optarg));
+				break;
             case 'z':
                 plate = "xz";
                 break;
