@@ -23,3 +23,4 @@ set (SOURCES
 
 add_executable (projekt ${SOURCES})
 target_link_libraries (projekt _CuraEngine)
+install(TARGETS projekt DESTINATION bin)
