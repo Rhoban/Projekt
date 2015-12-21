@@ -3,7 +3,7 @@
 #include "Generator.h"
 
 Generator::Generator()
-    : mesh(nullptr), output(""), format(FORMAT_SVG)
+    : mesh(nullptr), output(""), format(FORMAT_SVG), zExtra(0.0)
 {
 }
 
@@ -58,6 +58,11 @@ void Generator::addEngravure(double z, std::string color)
     engravures.push_back(e);
 }
 
+void Generator::setZExtra(double zExtra_)
+{
+	zExtra = zExtra_;
+}
+
 Polygons Generator::slice(int z)
 {
     Slicer slicer(&mesh, z, 200000, 1, false, false);
@@ -74,7 +79,7 @@ void Generator::addLayer(std::stringstream &data, bool isFirst, int z, std::stri
 {
 	double xRatio = 3.543307/1000.0;
 	double yRatio = -xRatio;
-    z += zOffset;
+    z += zOffset + zExtra;
     auto sliced = slice(z);
     auto polygon = sliced;
 	double fX, fY;

@@ -26,6 +26,7 @@ class Generator
         void setOutput(std::string filename);
 		void setOutputFormat(std::string format);
         void addEngravure(double z, std::string color);
+		void setZExtra(double zExtra);
         void run();
 
     protected:
@@ -34,6 +35,7 @@ class Generator
         double xMin, yMin, xMax, yMax;
         std::string output;
         double zOffset;
+		double zExtra;
         Polygons previous;
         Mesh mesh;
         std::vector<Engravure> engravures;

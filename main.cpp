@@ -13,6 +13,7 @@ void usage()
     std::cout << "Projekt - v0.1" << std::endl;
     std::cout << "usage: projekt input.stl" << std::endl;
     std::cout << std::endl;
+	std::cout << "-Z: Adds a Z-offset for the bottom" << std::endl;
     std::cout << "-z: Use the XZ plane as bottom instead of XY" << std::endl;
     std::cout << "-e z:color: Add an engravure at height z with given color" << std::endl;
     std::cout << "-o output.svg: Specify output name (default to stdout)" << std::endl;
@@ -32,7 +33,7 @@ int main(int argc, char *argv[])
     std::string input = "";
     std::string plate = "xy";
 
-    while ((index = getopt(argc, argv, "ze:o:f:")) != -1) {
+    while ((index = getopt(argc, argv, "ze:o:f:Z:")) != -1) {
         switch (index) {
 			case 'f':
 				generator.setOutputFormat(std::string(optarg));
@@ -49,6 +50,9 @@ int main(int argc, char *argv[])
             case 'o':
                 generator.setOutput(std::string(optarg));
                 break;
+			case 'Z':
+				generator.setExtra(atof(optarg));
+				break;
         }
     }
 
