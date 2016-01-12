@@ -14,7 +14,8 @@ void usage()
     std::cout << "usage: projekt input.stl" << std::endl;
     std::cout << std::endl;
 	std::cout << "-Z: Adds a Z-offset for the bottom" << std::endl;
-    std::cout << "-z: Use the XZ plane as bottom instead of XY" << std::endl;
+	std::cout << "-y: Use the YZ plane as bottom instead of XY" << std::endl;
+	std::cout << "-z: Use the XZ plane as bottom instead of XY" << std::endl;
     std::cout << "-e z:color: Add an engravure at height z with given color" << std::endl;
     std::cout << "-o output.svg: Specify output name (default to stdout)" << std::endl;
 	std::cout << "-f [svg|plt]: Specify output format" << std::endl;
@@ -33,7 +34,7 @@ int main(int argc, char *argv[])
     std::string input = "";
     std::string plate = "xy";
 
-    while ((index = getopt(argc, argv, "ze:o:f:Z:")) != -1) {
+    while ((index = getopt(argc, argv, "yze:o:f:Z:")) != -1) {
         switch (index) {
 			case 'f':
 				generator.setOutputFormat(std::string(optarg));
@@ -41,6 +42,9 @@ int main(int argc, char *argv[])
             case 'z':
                 plate = "xz";
                 break;
+			case 'y':
+				plate = "yz";
+				break;
             case 'e': {
                 auto parts = split(std::string(optarg), ':');
                 if (parts.size() != 2) usage();
@@ -51,7 +55,7 @@ int main(int argc, char *argv[])
                 generator.setOutput(std::string(optarg));
                 break;
 			case 'Z':
-				generator.setExtra(atof(optarg));
+				generator.setZExtra(atof(optarg));
 				break;
         }
     }
