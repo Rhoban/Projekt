@@ -27,6 +27,7 @@ class Generator
 		void setOutputFormat(std::string format);
         void addEngravure(double z, std::string color);
 		void setZExtra(double zExtra);
+		void setPOffset(double pOffset);
         void run();
 
     protected:
@@ -36,6 +37,7 @@ class Generator
         std::string output;
         double zOffset;
 		double zExtra;
+		double pOffset;
         Polygons previous;
         Mesh mesh;
         std::vector<Engravure> engravures;

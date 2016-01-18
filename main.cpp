@@ -19,6 +19,7 @@ void usage()
     std::cout << "-e z:color: Add an engravure at height z with given color" << std::endl;
     std::cout << "-o output.svg: Specify output name (default to stdout)" << std::endl;
 	std::cout << "-f [svg|plt]: Specify output format" << std::endl;
+	std::cout << "-O offset: customize polygon offset" << std::endl;
     std::cout << std::endl;
     std::cout << "Examples:" << std::endl;
     std::cout << "projekt input.stl > out.svg" << std::endl;
@@ -34,8 +35,11 @@ int main(int argc, char *argv[])
     std::string input = "";
     std::string plate = "xy";
 
-    while ((index = getopt(argc, argv, "yze:o:f:Z:")) != -1) {
+    while ((index = getopt(argc, argv, "yze:o:f:Z:O:")) != -1) {
         switch (index) {
+			case 'O':
+				generator.setPOffset(atof(optarg));
+				break;
 			case 'f':
 				generator.setOutputFormat(std::string(optarg));
 				break;

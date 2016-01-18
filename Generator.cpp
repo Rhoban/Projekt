@@ -3,7 +3,7 @@
 #include "Generator.h"
 
 Generator::Generator()
-    : mesh(nullptr), output(""), format(FORMAT_SVG), zExtra(0.0)
+    : mesh(nullptr), output(""), format(FORMAT_SVG), zExtra(0.0), pOffset(50)
 {
 }
 
@@ -69,6 +69,11 @@ void Generator::setZExtra(double zExtra_)
 	zExtra = zExtra_;
 }
 
+void Generator::setPOffset(double pOffset_)
+{
+	pOffset = pOffset_;
+}
+
 Polygons Generator::slice(int z)
 {
     Slicer slicer(&mesh, z, 200000, 1, false, false);
@@ -96,7 +101,7 @@ void Generator::addLayer(std::stringstream &data, bool isFirst, int z, std::stri
 	}
 
     if (!isFirst) {
-        polygon = previous.difference(polygon.offset(50));
+        polygon = previous.difference(polygon.offset(pOffset));
     } else {
 		sliced = sliced.offset(10);
 		polygon = sliced;
