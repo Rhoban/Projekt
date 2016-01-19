@@ -20,6 +20,7 @@ void usage()
     std::cout << "-o output.svg: Specify output name (default to stdout)" << std::endl;
 	std::cout << "-f [svg|plt]: Specify output format" << std::endl;
 	std::cout << "-O offset: customize polygon offset" << std::endl;
+	std::cout << "-r l:n:e: offset repeat n time on layer l with e spacing" << std::endl;
     std::cout << std::endl;
     std::cout << "Examples:" << std::endl;
     std::cout << "projekt input.stl > out.svg" << std::endl;
@@ -35,8 +36,15 @@ int main(int argc, char *argv[])
     std::string input = "";
     std::string plate = "xy";
 
-    while ((index = getopt(argc, argv, "yze:o:f:Z:O:")) != -1) {
+    while ((index = getopt(argc, argv, "yze:o:f:Z:O:r:")) != -1) {
         switch (index) {
+			case 'r': {
+				auto parts = split(std::string(optarg), ':');
+				if (parts.size() == 3) {
+					generator.setRepeat(parts[0], atoi(parts[1].c_str()), atof(parts[2].c_str()));
+				}
+				}
+				break;
 			case 'O':
 				generator.setPOffset(atof(optarg));
 				break;
@@ -52,7 +60,7 @@ int main(int argc, char *argv[])
             case 'e': {
                 auto parts = split(std::string(optarg), ':');
                 if (parts.size() != 2) usage();
-                generator.addEngravure(atof(parts[0].c_str()), parts[1]);
+					generator.addEngravure(atof(parts[0].c_str()), parts[1]);
                 }
                 break;
             case 'o':

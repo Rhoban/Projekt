@@ -69,6 +69,12 @@ void Generator::setZExtra(double zExtra_)
 	zExtra = zExtra_;
 }
 
+void Generator::setRepeat(std::string layer, int count, double spacing)
+{
+	repeats[layer].count = count;
+	repeats[layer].spacing = spacing;
+}
+
 void Generator::setPOffset(double pOffset_)
 {
 	pOffset = pOffset_;
@@ -86,27 +92,17 @@ Polygons Generator::slice(int z)
     }
 }
 
-void Generator::addLayer(std::stringstream &data, bool isFirst, int z, std::string color)
+void Generator::addPolygon(std::stringstream &data, Polygons polygon, bool isFirst, std::string color)
 {
+	double fX, fY;
+		
 	double xRatio = 3.543307/1000.0;
 	double yRatio = -xRatio;
-    z += zOffset + zExtra;
-    auto sliced = slice(z);
-    auto polygon = sliced;
-	double fX, fY;
-	
 	if (format == FORMAT_PLT) {
 		xRatio = 40.0/1000.0;
 		yRatio = 40.0/1000.0;
 	}
-
-    if (!isFirst) {
-        polygon = previous.difference(polygon.offset(pOffset));
-    } else {
-		sliced = sliced.offset(10);
-		polygon = sliced;
-	}
-
+	
     if (format == FORMAT_SVG) data << "<path d=\"";
 	if (format == FORMAT_PLT) data << "SP" << color << ";" << std::endl;
 
@@ -155,6 +151,28 @@ void Generator::addLayer(std::stringstream &data, bool isFirst, int z, std::stri
 		}
 	}
     if (format == FORMAT_SVG) data << std::endl;
+}
+
+void Generator::addLayer(std::stringstream &data, bool isFirst, int z, std::string color)
+{
+    z += zOffset + zExtra;
+    auto sliced = slice(z);
+    auto polygon = sliced;
+
+    if (!isFirst) {
+        polygon = previous.difference(polygon.offset(pOffset));
+    } else {
+		sliced = sliced.offset(10);
+		polygon = sliced;
+	}
+
+	addPolygon(data, polygon, isFirst, color);
+	if (repeats.count(color)) {
+		auto repeat = repeats[color];
+		for (int k=0; k<repeat.count; k++) {
+			addPolygon(data, polygon.offset(-(k+1)*repeat.spacing*1000.0), isFirst, color);
+		}
+	}
 
     previous = sliced;
 }
