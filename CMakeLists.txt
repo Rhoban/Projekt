@@ -22,5 +22,5 @@ if (STATIC_LINKING)
 endif ()
 
 add_executable (projekt ${SOURCES})
-target_link_libraries (projekt _CuraEngine)
+target_link_libraries (projekt _CuraEngine clipper)
 install(TARGETS projekt DESTINATION bin)
