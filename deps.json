@@ -1,0 +1,13 @@
+{
+    "name": "rhoban/projekt",
+    "binaries": "build",
+    "build": [
+        "mkdir build",
+        "cd build",
+        "cmake -DCMAKE_BUILD_TYPE=Release ..",
+        "make"
+    ],
+    "deps": [
+        "rhobandeps/curaengine"
+    ]
+}
