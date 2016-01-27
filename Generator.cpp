@@ -47,13 +47,13 @@ void Generator::setOutput(std::string filename)
 
 void Generator::setOutputFormat(std::string formatName)
 {
-	if (formatName == "svg") {
-		format = FORMAT_SVG;
-	} else if (formatName == "plt") {
-		 format = FORMAT_PLT;
-	} else {
-		std::cerr << "Unknown format: " << formatName << std::endl;
-	}
+    if (formatName == "svg") {
+        format = FORMAT_SVG;
+    } else if (formatName == "plt") {
+        format = FORMAT_PLT;
+    } else {
+        std::cerr << "Unknown format: " << formatName << std::endl;
+    }
 }
 
 void Generator::addEngravure(double z, std::string color)
@@ -66,18 +66,18 @@ void Generator::addEngravure(double z, std::string color)
 
 void Generator::setZExtra(double zExtra_)
 {
-	zExtra = zExtra_;
+    zExtra = zExtra_*1000.0;
 }
 
 void Generator::setRepeat(std::string layer, int count, double spacing)
 {
-	repeats[layer].count = count;
-	repeats[layer].spacing = spacing;
+    repeats[layer].count = count;
+    repeats[layer].spacing = spacing;
 }
 
 void Generator::setPOffset(double pOffset_)
 {
-	pOffset = pOffset_;
+    pOffset = pOffset_;
 }
 
 Polygons Generator::slice(int z)
@@ -94,17 +94,17 @@ Polygons Generator::slice(int z)
 
 void Generator::addPolygon(std::stringstream &data, Polygons polygon, bool isFirst, std::string color)
 {
-	double fX, fY;
-		
-	double xRatio = 3.543307/1000.0;
-	double yRatio = -xRatio;
-	if (format == FORMAT_PLT) {
-		xRatio = 40.0/1000.0;
-		yRatio = 40.0/1000.0;
-	}
-	
+    double fX, fY;
+
+    double xRatio = 3.543307/1000.0;
+    double yRatio = -xRatio;
+    if (format == FORMAT_PLT) {
+        xRatio = 40.0/1000.0;
+        yRatio = 40.0/1000.0;
+    }
+
     if (format == FORMAT_SVG) data << "<path d=\"";
-	if (format == FORMAT_PLT) data << "SP" << color << ";" << std::endl;
+    if (format == FORMAT_PLT) data << "SP" << color << ";" << std::endl;
 
     for (auto path : polygon) {
         if (format == FORMAT_SVG) data << "M ";
@@ -126,30 +126,30 @@ void Generator::addPolygon(std::stringstream &data, Polygons polygon, bool isFir
 
 
             if (first) {
-				fX = X;
-				fY = Y;
+                fX = X;
+                fY = Y;
                 first = false;
-				if (format == FORMAT_PLT) data << "PU";
+                if (format == FORMAT_PLT) data << "PU";
             } else {
                 if (format == FORMAT_SVG) data << "L ";
-				if (format == FORMAT_PLT) data << "PD";
+                if (format == FORMAT_PLT) data << "PD";
             }
             if (format == FORMAT_SVG) data << X << " " << Y << " ";
-			if (format == FORMAT_PLT) data << (int)X << " " << (int)Y << " ";
-			if (format == FORMAT_PLT) data << ";" << std::endl;
+            if (format == FORMAT_PLT) data << (int)X << " " << (int)Y << " ";
+            if (format == FORMAT_PLT) data << ";" << std::endl;
         }
         if (format == FORMAT_SVG) data << "z " << std::endl;
-		if (!first && format == FORMAT_PLT) {
-			data << "PD" << (int)fX << " " << (int)fY << " ";
-		}
+        if (!first && format == FORMAT_PLT) {
+            data << "PD" << (int)fX << " " << (int)fY << " ";
+        }
     }
-	if (format == FORMAT_SVG) {
-		if (isFirst) {
-			data << "\" stroke=\"" << color << "\" fill=\"none\" stroke-width=\"0.1\" />";
-		} else {
-			data << "\" stroke=\"none\" fill=\"" << color << "\" stroke-width=\"0.1\" />";
-		}
-	}
+    if (format == FORMAT_SVG) {
+        if (isFirst) {
+            data << "\" stroke=\"" << color << "\" fill=\"none\" stroke-width=\"0.1\" />";
+        } else {
+            data << "\" stroke=\"none\" fill=\"" << color << "\" stroke-width=\"0.1\" />";
+        }
+    }
     if (format == FORMAT_SVG) data << std::endl;
 }
 
@@ -162,17 +162,17 @@ void Generator::addLayer(std::stringstream &data, bool isFirst, int z, std::stri
     if (!isFirst) {
         polygon = previous.difference(polygon.offset(pOffset));
     } else {
-		sliced = sliced.offset(10);
-		polygon = sliced;
-	}
+        sliced = sliced.offset(10);
+        polygon = sliced;
+    }
 
-	addPolygon(data, polygon, isFirst, color);
-	if (repeats.count(color)) {
-		auto repeat = repeats[color];
-		for (int k=0; k<repeat.count; k++) {
-			addPolygon(data, polygon.offset(-(k+1)*repeat.spacing*1000.0), isFirst, color);
-		}
-	}
+    addPolygon(data, polygon, isFirst, color);
+    if (repeats.count(color)) {
+        auto repeat = repeats[color];
+        for (int k=0; k<repeat.count; k++) {
+            addPolygon(data, polygon.offset(-(k+1)*repeat.spacing*1000.0), isFirst, color);
+        }
+    }
 
     previous = sliced;
 }
@@ -195,8 +195,8 @@ void Generator::run()
     previous = empty;
 
     hasM = false;
-	std::string baseColor = "red";
-	if (format == FORMAT_PLT) baseColor = "1";
+    std::string baseColor = "red";
+    if (format == FORMAT_PLT) baseColor = "1";
     addLayer(data, true, 1, baseColor);
     for (auto e : engravures) {
         addLayer(data, false, e.z*1000, e.color);
@@ -204,16 +204,16 @@ void Generator::run()
 
     double width = (xMax-xMin);
     double height = (yMax-yMin);
-	
-	if (format == FORMAT_SVG) {
-		*os << "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"" << xMin << 
-			" " << yMin << " " << width << " " << height << "\">" << std::endl;
-		*os << data.str();
-		*os << "</svg>" << std::endl;
-	} else if (format == FORMAT_PLT) {
-		*os << data.str();		
-		*os << "SP0;" << std::endl;
-	}
+
+    if (format == FORMAT_SVG) {
+        *os << "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"" << xMin << 
+            " " << yMin << " " << width << " " << height << "\">" << std::endl;
+        *os << data.str();
+        *os << "</svg>" << std::endl;
+    } else if (format == FORMAT_PLT) {
+        *os << data.str();		
+        *os << "SP0;" << std::endl;
+    }
 
     if (output != "") {
         ofs.close();
