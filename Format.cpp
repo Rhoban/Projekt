@@ -2,6 +2,7 @@
 
 void Format::clear()
 {
+	hasM = false;
     stream.clear();
 }
 
