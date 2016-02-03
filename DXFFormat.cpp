@@ -2,7 +2,7 @@
         
 std::string DXFFormat::getBaseLayer()
 {
-    return "1";
+    return "7";
 }
 
 std::string DXFFormat::output()
@@ -13,6 +13,10 @@ std::string DXFFormat::output()
     outstr << "SECTION" << std::endl;
     outstr << "2" << std::endl;
     outstr << "ENTITIES" << std::endl;
+	outstr << "0" << std::endl;
+	outstr << "LAYER" << std::endl;
+	outstr << "2" << std::endl;
+	outstr << "part" << std::endl;
     outstr << stream.str();		
     outstr << "0" << std::endl;
     outstr << "ENDSEC" << std::endl;
@@ -45,6 +49,8 @@ void DXFFormat::addPoint(double x, double y)
     } else {
         stream << "0" << std::endl;
         stream << "LINE" << std::endl;
+		stream << "8" << std::endl;
+		stream << "part" << std::endl;
         stream << "10" << std::endl;
         stream << lX << std::endl;
         stream << "20" << std::endl;
@@ -66,12 +72,14 @@ void DXFFormat::endPath()
     if (!firstPoint) {
         stream << "0" << std::endl;
         stream << "LINE" << std::endl;
+		stream << "8" << std::endl;
+		stream << "part" << std::endl;
         stream << "10" << std::endl;
         stream << lX << std::endl;
         stream << "20" << std::endl;
         stream << lY << std::endl;
         stream << "11" << std::endl;
-        stream << fY << std::endl;
+        stream << fX << std::endl;
         stream << "21" << std::endl;
         stream << fY << std::endl;
         stream << "62" << std::endl;
