@@ -14,6 +14,7 @@ set (SOURCES
     Format.cpp
     SVGFormat.cpp
     PLTFormat.cpp
+    DXFFormat.cpp
 
     wingetopt.cpp
     util.cpp

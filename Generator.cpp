@@ -3,6 +3,7 @@
 #include "Generator.h"
 #include "PLTFormat.h"
 #include "SVGFormat.h"
+#include "DXFFormat.h"
 
 Generator::Generator()
     : mesh(nullptr), output(""), zExtra(0.0), pOffset(50)
@@ -55,6 +56,8 @@ void Generator::setOutputFormat(std::string formatName)
         format = new SVGFormat;
     } else if (formatName == "plt") {
         format = new PLTFormat;
+    } else if (formatName == "dxf") {
+        format = new DXFFormat;
     } else {
         std::cerr << "Unknown format: " << formatName << std::endl;
     }

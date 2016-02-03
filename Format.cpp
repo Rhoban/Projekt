@@ -23,12 +23,12 @@ void Format::endPath()
 
 double Format::getXRatio()
 {
-    return 1.0;
+    return 1.0/1000.0;
 }
 
 double Format::getYRatio()
 {
-    return 1.0;
+    return 1.0/1000.0;
 }
 
 void Format::registerPoint(double x, double y)
