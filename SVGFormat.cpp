@@ -50,7 +50,7 @@ void SVGFormat::addPoint(double x, double y)
         stream << "L ";
     }
             
-    stream << X << " " << Y << " ";
+    stream << x << " " << y << " ";
 }
 
 void SVGFormat::endPath()

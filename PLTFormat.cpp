@@ -9,7 +9,7 @@ std::string PLTFormat::output()
 {
     std::stringstream outstr;
         
-    outstr << data.str();		
+    outstr << stream.str();		
     outstr << "SP0;" << std::endl;
 
     return outstr.str();
@@ -40,14 +40,14 @@ void PLTFormat::addPoint(double x, double y)
         stream << "PD";
     }
 
-    stream << (int)X << " " << (int)Y << " ";
+    stream << (int)x << " " << (int)y << " ";
     stream << ";" << std::endl;
 }
 
 void PLTFormat::endPath()
 {
     if (!firstPoint) {
-        data << "PD" << (int)fX << " " << (int)fY << " ";
+        stream << "PD" << (int)fX << " " << (int)fY << " " << std::endl;
     }
 }
 

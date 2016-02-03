@@ -13,11 +13,11 @@ void Format::endPolygon(std::string layer, bool isFirst)
 {
 }
 
-virtual void Format::beginPath()
+void Format::beginPath()
 {
 }
 
-virtual void Format::endPath()
+void Format::endPath()
 {
 }
 
@@ -35,12 +35,12 @@ void Format::registerPoint(double x, double y)
 {
     if (!hasM) {
         hasM = true;
-        xMin = X; yMin = Y;
-        xMax = X; yMax = Y;
+        xMin = x; yMin = y;
+        xMax = x; yMax = y;
     } else {
-        if (X < xMin) xMin = X;
-        if (Y < yMin) yMin = Y;
-        if (X > xMax) xMax = X;
-        if (Y > yMax) yMax = Y;
+        if (x < xMin) xMin = x;
+        if (y < yMin) yMin = y;
+        if (x > xMax) xMax = x;
+        if (y > yMax) yMax = y;
     }
 }
