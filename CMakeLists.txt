@@ -11,6 +11,9 @@ set (CMAKE_CXX_FLAGS "-std=c++11 -Wall -Wno-reorder -pedantic -fno-elide-constru
 
 set (SOURCES
     Generator.cpp
+    Format.cpp
+    SVGFormat.cpp
+    PLTFormat.cpp
 
     wingetopt.cpp
     util.cpp

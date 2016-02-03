@@ -1,10 +1,13 @@
 #include <fstream>
 #include <unistd.h>
 #include "Generator.h"
+#include "PLTFormat.h"
+#include "SVGFormat.h"
 
 Generator::Generator()
-    : mesh(nullptr), output(""), format(FORMAT_SVG), zExtra(0.0), pOffset(50)
+    : mesh(nullptr), output(""), zExtra(0.0), pOffset(50)
 {
+    format = new SVGFormat;
 }
 
 void Generator::openSTL(std::string filename, std::string plate)
@@ -47,10 +50,11 @@ void Generator::setOutput(std::string filename)
 
 void Generator::setOutputFormat(std::string formatName)
 {
+    delete format;
     if (formatName == "svg") {
-        format = FORMAT_SVG;
+        format = new SVGFormat;
     } else if (formatName == "plt") {
-        format = FORMAT_PLT;
+        format = new PLTFormat;
     } else {
         std::cerr << "Unknown format: " << formatName << std::endl;
     }
@@ -92,65 +96,22 @@ Polygons Generator::slice(int z)
     }
 }
 
-void Generator::addPolygon(std::stringstream &data, Polygons polygon, bool isFirst, std::string color)
+void Generator::addPolygon(std::stringstream &data, Polygons polygon, bool isFirst, std::string layer)
 {
-    double fX, fY;
-
-    double xRatio = 3.543307/1000.0;
-    double yRatio = -xRatio;
-    if (format == FORMAT_PLT) {
-        xRatio = 40.0/1000.0;
-        yRatio = 40.0/1000.0;
-    }
-
-    if (format == FORMAT_SVG) data << "<path d=\"";
-    if (format == FORMAT_PLT) data << "SP" << color << ";" << std::endl;
+    format->beginPolygon(layer, isFirst);
 
     for (auto path : polygon) {
-        if (format == FORMAT_SVG) data << "M ";
-        bool first = true;
+        format->beginPath();
         for (auto point : path) {
-            double X = point.X*xRatio;
-            double Y = point.Y*yRatio;
+            double X = point.X*format->getXRatio();
+            double Y = point.Y*format->getYRatio();
 
-            if (!hasM) {
-                hasM = true;
-                xMin = X; yMin = Y;
-                xMax = X; yMax = Y;
-            } else {
-                if (X < xMin) xMin = X;
-                if (Y < yMin) yMin = Y;
-                if (X > xMax) xMax = X;
-                if (Y > yMax) yMax = Y;
-            }
-
-
-            if (first) {
-                fX = X;
-                fY = Y;
-                first = false;
-                if (format == FORMAT_PLT) data << "PU";
-            } else {
-                if (format == FORMAT_SVG) data << "L ";
-                if (format == FORMAT_PLT) data << "PD";
-            }
-            if (format == FORMAT_SVG) data << X << " " << Y << " ";
-            if (format == FORMAT_PLT) data << (int)X << " " << (int)Y << " ";
-            if (format == FORMAT_PLT) data << ";" << std::endl;
+            format->registerPoint(X, Y);
+            format->addPoint(X, Y);
         }
-        if (format == FORMAT_SVG) data << "z " << std::endl;
-        if (!first && format == FORMAT_PLT) {
-            data << "PD" << (int)fX << " " << (int)fY << " ";
-        }
+        format->endPath();
     }
-    if (format == FORMAT_SVG) {
-        if (isFirst) {
-            data << "\" stroke=\"" << color << "\" fill=\"none\" stroke-width=\"0.1\" />";
-        } else {
-            data << "\" stroke=\"none\" fill=\"" << color << "\" stroke-width=\"0.1\" />";
-        }
-    }
-    if (format == FORMAT_SVG) data << std::endl;
+    format->endPolygon(layer, isFirst);
 }
 
 void Generator::addLayer(std::stringstream &data, bool isFirst, int z, std::string color)
@@ -179,6 +140,7 @@ void Generator::addLayer(std::stringstream &data, bool isFirst, int z, std::stri
 
 void Generator::run()
 {
+    format->clear();
     std::ostream *os = &std::cout;
     std::ofstream ofs;
     if (output != "") {
@@ -194,26 +156,12 @@ void Generator::run()
     Polygons empty;
     previous = empty;
 
-    hasM = false;
-    std::string baseColor = "red";
-    if (format == FORMAT_PLT) baseColor = "1";
-    addLayer(data, true, 1, baseColor);
+    addLayer(data, true, 1, format->getBaseLayer());
     for (auto e : engravures) {
         addLayer(data, false, e.z*1000, e.color);
     }
 
-    double width = (xMax-xMin);
-    double height = (yMax-yMin);
-
-    if (format == FORMAT_SVG) {
-        *os << "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"" << xMin << 
-            " " << yMin << " " << width << " " << height << "\">" << std::endl;
-        *os << data.str();
-        *os << "</svg>" << std::endl;
-    } else if (format == FORMAT_PLT) {
-        *os << data.str();		
-        *os << "SP0;" << std::endl;
-    }
+    *os << format->output();
 
     if (output != "") {
         ofs.close();
