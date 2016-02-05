@@ -6,7 +6,7 @@
 #include "DXFFormat.h"
 
 Generator::Generator()
-    : mesh(nullptr), output(""), zExtra(0.0), pOffset(50)
+    : mesh(nullptr), output(""), zExtra(0.0), pOffset(50), areaTreshold(5e5)
 {
     format = new SVGFormat;
 }
@@ -84,7 +84,12 @@ void Generator::setRepeat(std::string layer, int count, double spacing)
 
 void Generator::setPOffset(double pOffset_)
 {
-    pOffset = pOffset_;
+    pOffset = pOffset_*1000.0;
+}
+        
+void Generator::setAreaTreshold(double treshold)
+{
+    areaTreshold = treshold*1000000.0;
 }
 
 Polygons Generator::slice(int z)
@@ -104,15 +109,18 @@ void Generator::addPolygon(std::stringstream &data, Polygons polygon, bool isFir
     format->beginPolygon(layer, isFirst);
 
     for (auto path : polygon) {
-        format->beginPath();
-        for (auto point : path) {
-            double X = point.X*format->getXRatio();
-            double Y = point.Y*format->getYRatio();
+        double area = ClipperLib::Area(path);
+        if (area > areaTreshold) {
+            format->beginPath();
+            for (auto point : path) {
+                double X = point.X*format->getXRatio();
+                double Y = point.Y*format->getYRatio();
 
-            format->registerPoint(X, Y);
-            format->addPoint(X, Y);
+                format->registerPoint(X, Y);
+                format->addPoint(X, Y);
+            }
+            format->endPath();
         }
-        format->endPath();
     }
     format->endPolygon(layer, isFirst);
 }

@@ -18,9 +18,10 @@ void usage()
     std::cout << "-z: Use the XZ plane as bottom instead of XY" << std::endl;
     std::cout << "-e z:color: Add an engravure at height z with given color" << std::endl;
     std::cout << "-o output.svg: Specify output name (default to stdout)" << std::endl;
-    std::cout << "-f [svg|plt]: Specify output format" << std::endl;
+    std::cout << "-f [svg|plt|dxf]: Specify output format" << std::endl;
     std::cout << "-O offset: customize polygon offset" << std::endl;
     std::cout << "-r l:n:e: offset repeat n time on layer l with e spacing" << std::endl;
+    std::cout << "-a [treshold]: area treshold (mm^2) to delete small polygons" << std::endl;
     std::cout << std::endl;
     std::cout << "Examples:" << std::endl;
     std::cout << "projekt input.stl > out.svg" << std::endl;

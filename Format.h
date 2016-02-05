@@ -5,6 +5,7 @@
 class Format
 {
     public:
+        virtual ~Format();
         void clear();
 
         virtual std::string getBaseLayer()=0;

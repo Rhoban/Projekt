@@ -32,13 +32,15 @@ class Generator
         void setOutputFormat(std::string format);
         void addEngravure(double z, std::string color);
         void setZExtra(double zExtra);
-        void setRepeat(std::string layer, int count, double spacing);
         void setPOffset(double pOffset);
+        void setAreaTreshold(double treshold);
+        void setRepeat(std::string layer, int count, double spacing);
         void run();
 
     protected:
         Format *format;
         std::string output;
+        double areaTreshold;
         double zOffset;
         double zExtra;
         double pOffset;

@@ -1,4 +1,8 @@
 #include "Format.h"
+        
+Format::~Format()
+{
+}
 
 void Format::clear()
 {
