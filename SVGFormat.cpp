@@ -1,3 +1,4 @@
+#include <iostream>
 #include "SVGFormat.h"
         
 std::string SVGFormat::getBaseLayer()
