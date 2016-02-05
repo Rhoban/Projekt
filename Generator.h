@@ -35,6 +35,7 @@ class Generator
         void setPOffset(double pOffset);
         void setAreaTreshold(double treshold);
         void setRepeat(std::string layer, int count, double spacing);
+        bool detectCircle(PolygonRef polygon, double &x, double &y, double &r);
         void run();
 
     protected:

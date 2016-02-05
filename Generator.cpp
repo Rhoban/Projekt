@@ -104,6 +104,42 @@ Polygons Generator::slice(int z)
     }
 }
 
+bool Generator::detectCircle(PolygonRef polygon, double &x, double &y, double &r)
+{
+    x = 0;
+    y = 0;
+    int n = 0;
+    n = polygon.size();
+
+    // There should be at least 10 points
+    if (n > 10) {
+        // What would be the center of the circle?
+        auto center = polygon.centerOfMass();
+        x = center.X;
+        y = center.Y;
+        // What would be the radius ?
+        r = 0;
+        for (auto point : polygon) {
+            r += sqrt(pow(point.X-x, 2) + pow(point.Y-y, 2));
+        }
+        r /= (float)n;
+        double rMin = 0.99*r;
+        double rMax = 1.01*r;
+        // Test: are all the point in +-1% of the radius?
+        for (auto point : polygon) {
+            double r = sqrt(pow(point.X-x, 2) + pow(point.Y-y, 2));
+            if (r < rMin || r > rMax) {
+                return false;
+            }
+        }
+
+        // We assume this is a circle
+        return true;
+    }
+    
+    return false;
+}
+
 void Generator::addPolygon(std::stringstream &data, Polygons polygon, bool isFirst, std::string layer)
 {
     format->beginPolygon(layer, isFirst);
@@ -111,15 +147,29 @@ void Generator::addPolygon(std::stringstream &data, Polygons polygon, bool isFir
     for (auto path : polygon) {
         double area = fabs(ClipperLib::Area(path));
         if (area > areaTreshold) {
-            format->beginPath();
-            for (auto point : path) {
-                double X = point.X*format->getXRatio();
-                double Y = point.Y*format->getYRatio();
+            double cX, cY, cR;
+            if (format->supportsCircle() && detectCircle(path, cX, cY, cR)) {
+                for (auto point : path) {
+                    double X = point.X*format->getXRatio();
+                    double Y = point.Y*format->getYRatio();
+                    format->registerPoint(X, Y);
+                }
+                
+                double X = cX*format->getXRatio();
+                double Y = cY*format->getYRatio();
+                double R = cR*format->getXRatio();
+                format->addCircle(layer, X, Y, R);
+            } else {
+                format->beginPath();
+                for (auto point : path) {
+                    double X = point.X*format->getXRatio();
+                    double Y = point.Y*format->getYRatio();
 
-                format->registerPoint(X, Y);
-                format->addPoint(X, Y);
+                    format->registerPoint(X, Y);
+                    format->addPoint(X, Y);
+                }
+                format->endPath();
             }
-            format->endPath();
         }
     }
     format->endPolygon(layer, isFirst);

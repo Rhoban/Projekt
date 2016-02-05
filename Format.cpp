@@ -34,6 +34,15 @@ double Format::getYRatio()
 {
     return 1.0/1000.0;
 }
+        
+bool Format::supportsCircle()
+{
+    return false;
+}
+
+void Format::addCircle(std::string layer, double x, double y, double r)
+{
+}
 
 void Format::registerPoint(double x, double y)
 {

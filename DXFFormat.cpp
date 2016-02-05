@@ -78,3 +78,22 @@ void DXFFormat::endPath()
         stream << currentLayer << std::endl;
     }
 }
+        
+bool DXFFormat::supportsCircle()
+{
+    return true;
+}
+
+void DXFFormat::addCircle(std::string layer, double x, double y, double r)
+{
+    stream << "0" << std::endl;
+    stream << "CIRCLE" << std::endl;
+    stream << "10" << std::endl;
+    stream << x << std::endl;
+    stream << "20" << std::endl;
+    stream << y << std::endl;
+    stream << "40" << std::endl;
+    stream << r << std::endl;
+    stream << "62" << std::endl;
+    stream << layer << std::endl;
+}

@@ -13,6 +13,8 @@ class Format
         virtual void endPolygon(std::string layer, bool isFirst);
         virtual void beginPath();
         virtual void addPoint(double x, double y)=0;
+        virtual bool supportsCircle();
+        virtual void addCircle(std::string layer, double x, double y, double r);
         virtual void endPath();
         virtual std::string output()=0;
         

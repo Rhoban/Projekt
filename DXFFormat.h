@@ -11,6 +11,8 @@ class DXFFormat : public Format
         virtual std::string output();
         virtual void beginPath();
         virtual void addPoint(double x, double y);
+        virtual bool supportsCircle();
+        virtual void addCircle(std::string layer, double x, double y, double r);
         virtual void endPath();
         
     protected:
