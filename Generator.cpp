@@ -6,7 +6,7 @@
 #include "DXFFormat.h"
 
 Generator::Generator()
-    : mesh(nullptr), output(""), zExtra(0.0), pOffset(20), areaTreshold(1e6)
+    : mesh(nullptr), output(""), zExtra(0.0), pOffset(20), areaTreshold(1e6), circleDetection(true)
 {
     format = new SVGFormat;
 }
@@ -148,7 +148,7 @@ void Generator::addPolygon(std::stringstream &data, Polygons polygon, bool isFir
         double area = fabs(ClipperLib::Area(path));
         if (area > areaTreshold) {
             double cX, cY, cR;
-            if (format->supportsCircle() && detectCircle(path, cX, cY, cR)) {
+            if (circleDetection && format->supportsCircle() && detectCircle(path, cX, cY, cR)) {
                 for (auto point : path) {
                     double X = point.X*format->getXRatio();
                     double Y = point.Y*format->getYRatio();

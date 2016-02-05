@@ -38,6 +38,8 @@ class Generator
         bool detectCircle(PolygonRef polygon, double &x, double &y, double &r);
         void run();
 
+        bool circleDetection;
+
     protected:
         Format *format;
         std::string output;

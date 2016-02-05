@@ -22,6 +22,7 @@ void usage()
     std::cout << "-O offset: customize polygon offset" << std::endl;
     std::cout << "-r l:n:e: offset repeat n time on layer l with e spacing" << std::endl;
     std::cout << "-a [treshold]: area treshold (mm^2) to delete small polygons" << std::endl;
+    std::cout << "-n: disable circle detection" << std::endl;
     std::cout << std::endl;
     std::cout << "Examples:" << std::endl;
     std::cout << "projekt input.stl > out.svg" << std::endl;
@@ -37,8 +38,11 @@ int main(int argc, char *argv[])
     std::string input = "";
     std::string plate = "xy";
 
-    while ((index = getopt(argc, argv, "yze:o:f:Z:O:r:a:")) != -1) {
+    while ((index = getopt(argc, argv, "yze:o:f:Z:O:r:a:n")) != -1) {
         switch (index) {
+            case 'n':
+                generator.circleDetection = false;
+                break;
             case 'r': {
                           auto parts = split(std::string(optarg), ':');
                           if (parts.size() == 3) {
