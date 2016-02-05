@@ -37,15 +37,18 @@ int main(int argc, char *argv[])
     std::string input = "";
     std::string plate = "xy";
 
-    while ((index = getopt(argc, argv, "yze:o:f:Z:O:r:")) != -1) {
+    while ((index = getopt(argc, argv, "yze:o:f:Z:O:r:a:")) != -1) {
         switch (index) {
             case 'r': {
-                      auto parts = split(std::string(optarg), ':');
-                      if (parts.size() == 3) {
-                          generator.setRepeat(parts[0], atoi(parts[1].c_str()), atof(parts[2].c_str()));
+                          auto parts = split(std::string(optarg), ':');
+                          if (parts.size() == 3) {
+                              generator.setRepeat(parts[0], atoi(parts[1].c_str()), atof(parts[2].c_str()));
+                          }
                       }
-                  }
-                  break;
+                      break;
+            case 'a':
+                      generator.setAreaTreshold(atof(optarg));
+                      break;
             case 'O':
                       generator.setPOffset(atof(optarg));
                       break;

@@ -6,7 +6,7 @@
 #include "DXFFormat.h"
 
 Generator::Generator()
-    : mesh(nullptr), output(""), zExtra(0.0), pOffset(50), areaTreshold(2e5)
+    : mesh(nullptr), output(""), zExtra(0.0), pOffset(20), areaTreshold(2e5)
 {
     format = new SVGFormat;
 }
@@ -109,7 +109,7 @@ void Generator::addPolygon(std::stringstream &data, Polygons polygon, bool isFir
     format->beginPolygon(layer, isFirst);
 
     for (auto path : polygon) {
-        double area = ClipperLib::Area(path);
+        double area = fabs(ClipperLib::Area(path));
         if (area > areaTreshold) {
             format->beginPath();
             for (auto point : path) {
