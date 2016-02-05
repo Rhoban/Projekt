@@ -71,7 +71,7 @@ void DXFFormat::endPath()
         stream << "20" << std::endl;
         stream << lY << std::endl;
         stream << "11" << std::endl;
-        stream << fY << std::endl;
+        stream << fX << std::endl;
         stream << "21" << std::endl;
         stream << fY << std::endl;
         stream << "62" << std::endl;
