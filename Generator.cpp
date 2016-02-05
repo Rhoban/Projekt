@@ -6,7 +6,7 @@
 #include "DXFFormat.h"
 
 Generator::Generator()
-    : mesh(nullptr), output(""), zExtra(0.0), pOffset(20), areaTreshold(2e5)
+    : mesh(nullptr), output(""), zExtra(0.0), pOffset(20), areaTreshold(1e6)
 {
     format = new SVGFormat;
 }
