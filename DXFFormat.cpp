@@ -2,7 +2,7 @@
         
 std::string DXFFormat::getBaseLayer()
 {
-    return "7";
+    return "0";
 }
 
 std::string DXFFormat::output()
