@@ -6,7 +6,7 @@
 #include "DXFFormat.h"
 
 Generator::Generator()
-    : mesh(nullptr), output(""), zExtra(0.0), pOffset(20), areaTreshold(1e6), circleDetection(true)
+    : mesh(nullptr), output(""), zExtra(0.0), pOffset(35), areaTreshold(3e6), circleDetection(true)
 {
     format = new DXFFormat;
 }
