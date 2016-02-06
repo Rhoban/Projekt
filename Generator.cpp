@@ -94,7 +94,7 @@ void Generator::setAreaTreshold(double treshold)
 
 Polygons Generator::slice(int z)
 {
-    Slicer slicer(&mesh, z, 200000, 1, false, false);
+    Slicer slicer(&mesh, z, 100000000, 1, false, false);
 
     if (slicer.layers.size() == 1) {
         return slicer.layers[0].polygonList;
