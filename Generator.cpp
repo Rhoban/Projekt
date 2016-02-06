@@ -8,7 +8,7 @@
 Generator::Generator()
     : mesh(nullptr), output(""), zExtra(0.0), pOffset(20), areaTreshold(1e6), circleDetection(true)
 {
-    format = new SVGFormat;
+    format = new DXFFormat;
 }
 
 void Generator::openSTL(std::string filename, std::string plate)

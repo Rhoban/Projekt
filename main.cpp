@@ -17,7 +17,7 @@ void usage()
     std::cout << "-y: Use the YZ plane as bottom instead of XY" << std::endl;
     std::cout << "-z: Use the XZ plane as bottom instead of XY" << std::endl;
     std::cout << "-e z:color: Add an engravure at height z with given color" << std::endl;
-    std::cout << "-o output.svg: Specify output name (default to stdout)" << std::endl;
+    std::cout << "-o output.ext: Specify output name (default to stdout)" << std::endl;
     std::cout << "-f [svg|plt|dxf]: Specify output format" << std::endl;
     std::cout << "-O offset: customize polygon offset" << std::endl;
     std::cout << "-r l:n:e: offset repeat n time on layer l with e spacing" << std::endl;
@@ -25,9 +25,10 @@ void usage()
     std::cout << "-n: disable circle detection" << std::endl;
     std::cout << std::endl;
     std::cout << "Examples:" << std::endl;
-    std::cout << "projekt input.stl > out.svg" << std::endl;
-    std::cout << "projekt input.stl -e 2.5:black -o out.svg" << std::endl;
-    std::cout << "projekt input.stl -e 2.5:black -e 2.9:grey -z -o out.svg" << std::endl;
+    std::cout << "projekt input.stl > out.dxf" << std::endl;
+    std::cout << "projekt input.stl -e 2.5:7 -o out.dxf" << std::endl;
+    std::cout << "projekt input.stl -e 2.5:7 -e 2.9:2 -z -o out.dxf" << std::endl;
+    std::cout << "projekt input.stl -f svg > out.svg" << std::endl;
     exit(0);
 }
 
