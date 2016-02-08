@@ -20,6 +20,10 @@ std::string DXFFormat::output()
     outstr << "$ACADVER" << std::endl;
     outstr << "1" << std::endl;
     outstr << "AC1006" << std::endl;
+	outstr << "9" << std::endl;
+    outstr << "$INSUNITS" << std::endl;
+	outstr << "70" << std::endl;
+    outstr << "4" << std::endl;
     outstr << "9" << std::endl;
     outstr << "$INSBASE" << std::endl;
     outstr << "10" << std::endl;
