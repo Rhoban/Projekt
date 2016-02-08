@@ -3,20 +3,11 @@
 Projekt is a tool based on Cura that allow you to slice STL parts into SVG for
 laser machines, with cutting and engraving.
 
-## Building
+## Getting it
 
-First, clone the repositories:
+First, install [deps](https://github.com/Rhoban/deps), then:
 
-    git clone https://github.com/Rhoban/CuraEngine.git --depth=1
-    git clone https://github.com/Rhoban/Projekt.git
-
-Then, go in the `Projekt` directory and run cmake:
-
-    cd Projekt
-    mkdir build
-    cd build
-    cmake ..
-    make
+	deps install rhoban/projekt
 
 ## Usage
 
