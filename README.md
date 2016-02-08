@@ -5,7 +5,7 @@ laser machines, with cutting and engraving.
 
 ## Getting it
 
-First, install [deps](https://github.com/Rhoban/deps), then:
+First, install [deps](https://github.com/Rhoban/deps#installation), then:
 
 	deps install rhoban/projekt
 
