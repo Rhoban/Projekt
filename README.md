@@ -1,5 +1,7 @@
 # Projekt
 
+![Projekt](projekt.png)
+
 Projekt is a tool based on Cura that allow you to slice STL parts into SVG for
 laser machines, with cutting and engraving.
 
