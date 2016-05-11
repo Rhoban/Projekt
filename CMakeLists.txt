@@ -1,13 +1,11 @@
 cmake_minimum_required (VERSION 2.6.0)
-project (stl2laser)
+project (Projekt)
+find_package (Deps)
 
 option (STATIC_LINKING
 	"Static link" ON)
 
-option (ENABLE_ARCUS
-    "Enable arcus" OFF)
-
-set (CMAKE_CXX_FLAGS "-std=c++11 -Wall -Wno-reorder -pedantic -fno-elide-constructors")
+set (CMAKE_CXX_FLAGS "-std=c++11 -Wall -Wno-reorder -pedantic -fno-elide-constructors -fPIE")
 
 set (SOURCES
     Generator.cpp
@@ -22,9 +20,11 @@ set (SOURCES
     )
 	
 if (STATIC_LINKING)
-	set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
+    set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
 endif ()
 
+deps_add_library ("rhobandeps/curaengine")
+
 add_executable (projekt ${SOURCES})
-target_link_libraries (projekt _CuraEngine clipper)
+target_link_libraries (projekt ${DEPS_LIBRARIES})
 install(TARGETS projekt DESTINATION bin)
