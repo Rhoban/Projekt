@@ -7,9 +7,21 @@ laser machines, with cutting and engraving.
 
 ## Getting it
 
-First, install [deps](https://github.com/Rhoban/deps#installation), then:
+First, install wks:
 
-	deps install rhoban/projekt
+    pip install wks
+
+Then, run:
+
+    mkdir projekt_wks
+    cd projekt_wks
+    wks install rhoban/projekt
+
+And:
+
+    wks build
+
+The binary will be output in `build/bin/projekt`.
 
 ## Usage
 
